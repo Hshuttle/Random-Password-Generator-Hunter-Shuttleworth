@@ -10,60 +10,98 @@ function writePassword() {
   passwordText.value = password;
 }
 
-// numbers, symbols & letters for password input for Prompts
+// Variables for numbers, symbols & letters for password input for Prompts
 var numbers = "0123456789";
 var symbols = "<>?!@#$%&";
 var letters = "abcdefghijklmnopqrstuvwxyz";
 var uLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-// User Prompts
-
 var errorText = "Error: Please enter a valid input";
+var included = "";
 
-function generatePassword() {
-  console.log("clicking works");
-
+function pUser() {
   // 1. Prompt user for password criteria
-  //    a. between 8 & 128 characters
-  var password = passLength();
-  console.log(password);
-  //    b. lowercase, uppercase, numbers, special characters
-  // Lowercase
-  var pLower = confirm(
-    "Would you like lowercase letters to be used in your generated password? Please answer Y or N"
-  );
-  // Uppercase
-  var pUpper = confirm(
-    "Would you like uppercase letters to be used in your generated password? Please answer Y or N"
-  );
-  // Number
-  var pNumber = confirm(
-    "Would you like for numbers to be used in your generated password? Please answer Y or N"
-  );
-  // Special Characters
-  var pChar = confirm(
-    "Would you like for special characters to be used in your generated password? Please answer Y or N"
-  );
-  // 2. Validate input
-
-  // 3. Generate a password based on the specified criteria
-
-  // 4. display password to page
-  return "generated password will go here";
-}
-
-function passLength() {
   var pLength = prompt(
     "Please choose your password length, please note that it must be between 8 and 128 characters"
   );
+  // turns password length string into a number for if statement to work.
   var pLengthNum = Number(pLength);
   if (pLengthNum >= 8 && pLengthNum <= 128) {
-    return "valid password length";
   } else {
     alert(errorText);
-    return errorText;
   }
+  // Lowercase--------------------------------
+  var pLower = confirm(
+    "Would you like lowercase letters to be used in your generated password?"
+  );
+  if (pLower == true) {
+    included += letters;
+  }
+  // Uppercase-------------------------------
+  var pUpper = confirm(
+    "Would you like uppercase letters to be used in your generated password?"
+  );
+  if (pUpper == true) {
+    included += uLetters;
+  }
+  // Number----------------------------------
+  var pNumber = confirm(
+    "Would you like for numbers to be used in your generated password?"
+  );
+  if (pNumber == true) {
+    included += numbers;
+  }
+  // Special Characters----------------------
+  var pChar = confirm(
+    "Would you like for special characters to be used in your generated password?"
+  );
+  if (pChar == true) {
+    included += symbols;
+  }
+
+  // object to log results of the user prompts
+  var entries = {
+    length: pLength,
+    lowercase: pLower,
+    uppercase: pUpper,
+    number: pNumber,
+    special: pChar,
+  };
+  return entries;
 }
+
+// // 2. Validate input
+// function validateP() {
+//   // Lowercase letters validate--------------------
+//   if (pLower == true) {
+//     included += letters;
+//   }
+
+//   // Uppercase letters validate--------------------
+//   if (pUpper == true) {
+//     included += uLetters;
+//   }
+
+//   // Number validate-------------------------------
+//   if (pNumber == true) {
+//     included += numbers;
+//   }
+
+//   // Special Characters validate------------------
+//   if (pChar == true) {
+//     included += symbols;
+//   }
+//   return included;
+// }
+
+// 3. Generate a password based on the specified criteria
+function generatePassword() {
+  var inputs = pUser();
+  console.log(inputs);
+  // var includedCharacters = validateP();
+  console.log(included);
+}
+
+// 4. display password to page
 
 // Add event listener to generate button- calls write password function
 generateBtn.addEventListener("click", writePassword);
