@@ -11,94 +11,94 @@ function writePassword() {
 }
 
 // Variables for numbers, symbols & letters for password input for Prompts
-var numbers = "0123456789";
-var symbols = "<>?!@#$%&";
-var letters = "abcdefghijklmnopqrstuvwxyz";
-var uLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-var errorText = "Error: Please enter a valid input";
-var included = "";
 
 function pUser() {
   // 1. Prompt user for password criteria
   var pLength = prompt(
     "Please choose your password length, please note that it must be between 8 and 128 characters"
   );
+  if (!pLength) {
+    return 0;
+  }
+  console.log(pLength);
   // turns password length string into a number for if statement to work.
   var pLengthNum = Number(pLength);
   if (pLengthNum >= 8 && pLengthNum <= 128) {
   } else {
-    alert(errorText);
+    alert("Error: Please enter a valid input");
+    return pUser();
   }
   // Lowercase--------------------------------
   var pLower = confirm(
     "Would you like lowercase letters to be used in your generated password?"
   );
-  if (pLower == true) {
-    included += letters;
-  }
+
   // Uppercase-------------------------------
   var pUpper = confirm(
     "Would you like uppercase letters to be used in your generated password?"
   );
-  if (pUpper == true) {
-    included += uLetters;
-  }
+
   // Number----------------------------------
   var pNumber = confirm(
     "Would you like for numbers to be used in your generated password?"
   );
-  if (pNumber == true) {
-    included += numbers;
-  }
+
   // Special Characters----------------------
   var pChar = confirm(
     "Would you like for special characters to be used in your generated password?"
   );
-  if (pChar == true) {
-    included += symbols;
-  }
 
   // object to log results of the user prompts
   var entries = {
     length: pLength,
-    lowercase: pLower,
-    uppercase: pUpper,
+    upper: pUpper,
+    lower: pLower,
     number: pNumber,
     special: pChar,
   };
+  console.log(entries);
+
   return entries;
 }
 
-// // 2. Validate input
-// function validateP() {
-//   // Lowercase letters validate--------------------
-//   if (pLower == true) {
-//     included += letters;
-//   }
-
-//   // Uppercase letters validate--------------------
-//   if (pUpper == true) {
-//     included += uLetters;
-//   }
-
-//   // Number validate-------------------------------
-//   if (pNumber == true) {
-//     included += numbers;
-//   }
-
-//   // Special Characters validate------------------
-//   if (pChar == true) {
-//     included += symbols;
-//   }
-//   return included;
-// }
+function createPasswordBase(choices) {
+  console.log("In my createPassword");
+  console.log(choices);
+  if (!choices.upper && !choices.lower && !choices.number && !choices.number) {
+    alert("You must select at least one variable type!");
+    return generatePassword();
+  }
+  var numbers = "0123456789";
+  var symbols = "<>?!@#$%&";
+  var letters = "abcdefghijklmnopqrstuvwxyz";
+  var uLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let passwordBase = "";
+  if (choices.upper) passwordBase += uLetters;
+  console.log(passwordBase);
+  if (choices.lower) passwordBase += letters;
+  console.log(passwordBase);
+  if (choices.special) passwordBase += symbols;
+  console.log(passwordBase);
+  if (choices.number) passwordBase += numbers;
+  console.log(passwordBase);
+  return passwordBase;
+}
 
 // 3. Generate a password based on the specified criteria
 function generatePassword() {
-  var inputs = pUser();
-  console.log(inputs);
-  // var includedCharacters = validateP();
-  console.log(included);
+  var choices = pUser();
+  if (!choices) return "No Password";
+  var included = createPasswordBase(choices);
+  console.log(choices);
+  var finalPassword = "";
+  for (let i = 0; i < choices.length; i++) {
+    let randomIndex = Math.floor(Math.random() * included.length);
+    console.log(randomIndex);
+    finalPassword += included.charAt(randomIndex);
+    console.log(finalPassword);
+  }
+
+  return finalPassword;
 }
 
 // 4. display password to page
